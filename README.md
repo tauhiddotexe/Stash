@@ -32,7 +32,7 @@
 
 <br>
 
-<img src="docs/pics/section-app.svg" width="100%"/>
+## The App
 
 <br>
 
@@ -47,7 +47,7 @@
 <br>
 
 <a href="https://tauhiddotexe.github.io/Stash/">
-  <img src="docs/pics/ui-2(light%26dark_mode%2C%20illustration%2Cdelete-btn).jpeg" alt="Light mode, dark mode, illustrated empty states, and delete confirmation" width="100%"/>
+  <img src="docs/pics/ui-light-dark-states.jpeg" alt="Light mode, dark mode, illustrated empty states, and delete confirmation" width="100%"/>
 </a>
 
 <br>
@@ -60,7 +60,7 @@
 
 <br>
 
-<img src="docs/pics/section-features.svg" width="100%"/>
+## Features
 
 <br>
 
@@ -82,7 +82,7 @@
 
 <br>
 
-<img src="docs/pics/section-how.svg" width="100%"/>
+## How It Works
 
 <br>
 
@@ -108,7 +108,7 @@ Record          Analyze           Understand
 
 <br>
 
-<img src="docs/pics/section-tech.svg" width="100%"/>
+## Tech Stack
 
 <br>
 
@@ -130,7 +130,7 @@ Record          Analyze           Understand
 
 <br>
 
-<img src="docs/pics/section-arch.svg" width="100%"/>
+## Architecture
 
 <br>
 
@@ -190,7 +190,7 @@ Derived values recompute with `useMemo` keyed on `expenses` — fast even as his
 
 <br>
 
-<img src="docs/pics/section-start.svg" width="100%"/>
+## Getting Started
 
 <br>
 
@@ -269,7 +269,7 @@ Stash/
 
 <br>
 
-<img src="docs/pics/section-future.svg" width="100%"/>
+## Future Scope
 
 <br>
 
