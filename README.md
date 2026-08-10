@@ -2,7 +2,7 @@
 
 <br>
 
-<a href="https://tauhiddotexe.github.io/Stash/">
+<a href="https://stash-rec.vercel.app/">
   <img src="docs/pics/logo.png" alt="Stash logo" width="320"/>
 </a>
 
@@ -22,7 +22,11 @@
 
 <br>
 
-[Live Demo](https://tauhiddotexe.github.io/Stash/) &nbsp;·&nbsp; [Report Bug](https://github.com/tauhiddotexe/Stash/issues) &nbsp;·&nbsp; [Request Feature](https://github.com/tauhiddotexe/Stash/issues)
+[![Live App](https://img.shields.io/badge/Live_App-stash--rec.vercel.app-007AFF?style=flat-square&logo=vercel&logoColor=white)](https://stash-rec.vercel.app/)
+
+<br>
+
+**[▶ Try the live app](https://stash-rec.vercel.app/)** &nbsp;·&nbsp; [Report Bug](https://github.com/tauhiddotexe/Stash/issues) &nbsp;·&nbsp; [Request Feature](https://github.com/tauhiddotexe/Stash/issues)
 
 </div>
 
@@ -32,27 +36,35 @@
 
 <br>
 
-## The App
+## 📱 The App
 
 <br>
 
-<a href="https://tauhiddotexe.github.io/Stash/">
-  <img src="docs/pics/ui-basic.jpeg" alt="Stash dashboard showing period total, quick summaries, spending trend chart, category breakdown, and recent expenses" width="100%"/>
+<div align="center">
+
+<a href="https://stash-rec.vercel.app/">
+  <img src="docs/pics/ui-basic.jpeg" alt="Stash dashboard showing period total, quick summaries, spending trend chart, category breakdown, and recent expenses" width="82%"/>
 </a>
 
 <br>
 
-*The dashboard — your spending at a glance. Period total, quick summaries, trend chart, category breakdown, and recent expenses.*
+<sub>_The dashboard — your spending at a glance. Period total, quick summaries, trend chart, category breakdown, and recent expenses._</sub>
+
+</div>
 
 <br>
 
-<a href="https://tauhiddotexe.github.io/Stash/">
-  <img src="docs/pics/ui-light-dark-states.jpeg" alt="Light mode, dark mode, illustrated empty states, and delete confirmation" width="100%"/>
+<div align="center">
+
+<a href="https://stash-rec.vercel.app/">
+  <img src="docs/pics/ui-light-dark-states.jpeg" alt="Light mode, dark mode, illustrated empty states, and delete confirmation" width="82%"/>
 </a>
 
 <br>
 
-*Light & dark themes, friendly empty states, and thoughtful deletion — every detail considered.*
+<sub>_Light & dark themes, friendly empty states, and thoughtful deletion — every detail considered._</sub>
+
+</div>
 
 <br>
 
@@ -60,7 +72,7 @@
 
 <br>
 
-## Features
+## ✨ Features
 
 <br>
 
@@ -82,7 +94,7 @@
 
 <br>
 
-## How It Works
+## 🔄 How It Works
 
 <br>
 
@@ -108,7 +120,7 @@ Record          Analyze           Understand
 
 <br>
 
-## Tech Stack
+## 🧰 Tech Stack
 
 <br>
 
@@ -130,7 +142,7 @@ Record          Analyze           Understand
 
 <br>
 
-## Architecture
+## 🏗️ Architecture
 
 <br>
 
@@ -190,7 +202,7 @@ Derived values recompute with `useMemo` keyed on `expenses` — fast even as his
 
 <br>
 
-## Getting Started
+## 🚀 Getting Started
 
 <br>
 
@@ -269,7 +281,7 @@ Stash/
 
 <br>
 
-## Future Scope
+## 🗺️ Future Scope
 
 <br>
 
@@ -287,6 +299,10 @@ Stash/
 <br>
 
 ---
+
+<br>
+
+> **Live app:** [stash-rec.vercel.app](https://stash-rec.vercel.app/) — no install, no sign-up, works in your browser.
 
 <br>
 
