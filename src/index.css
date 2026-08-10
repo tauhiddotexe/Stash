@@ -171,6 +171,13 @@
   --shadow-fab: var(--shadow-fab);
 }
 
+/* Smooth Apple-like crossfade when toggling light ↔ dark.
+   Scoped to color properties only — transform/opacity animations (GSAP, keyframes)
+   are untouched. Class-based transitions win on specificity where both apply. */
+* {
+  transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+
 /* ------------------------------------------------------------------ Base */
 
 html,

@@ -26,7 +26,7 @@ export function useResolvedColors(): ResolvedColors {
     const colors = {
       category,
       accent: read("--accent"),
-      labelTertiary: "rgba(120,120,128,0.6)",
+      labelTertiary: read("--label-tertiary"),
     };
     probe.remove();
     return colors;
