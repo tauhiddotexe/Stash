@@ -1,6 +1,8 @@
 import {
   AirplaneTilt,
   ArrowDown,
+  ArrowLeft,
+  ArrowUp,
   ArrowUpRight,
   Briefcase,
   Calendar,
@@ -12,6 +14,7 @@ import {
   ChartPieSlice,
   Check,
   CheckCircle,
+  Clock,
   Coin,
   Coins,
   DotsThree,
@@ -28,7 +31,10 @@ import {
   Receipt,
   ShoppingBag,
   Sparkle,
+  Stack,
+  SunDim,
   TrashSimple,
+  TrendDown,
   TrendUp,
   Wallet,
   X,
@@ -69,7 +75,13 @@ export type IconName =
   | "piggyBank"
   | "arrowUpRight"
   | "arrowDown"
-  | "trendUp";
+  | "arrowUp"
+  | "arrowLeft"
+  | "trendUp"
+  | "trendDown"
+  | "sunDim"
+  | "clock"
+  | "stack";
 
 const ICONS: Record<Exclude<IconName, "other">, PhosphorIcon> = {
   house: House,
@@ -104,7 +116,13 @@ const ICONS: Record<Exclude<IconName, "other">, PhosphorIcon> = {
   piggyBank: PiggyBank,
   arrowUpRight: ArrowUpRight,
   arrowDown: ArrowDown,
+  arrowUp: ArrowUp,
+  arrowLeft: ArrowLeft,
   trendUp: TrendUp,
+  trendDown: TrendDown,
+  sunDim: SunDim,
+  clock: Clock,
+  stack: Stack,
 };
 
 /** Map the previous stroke-weight API onto Phosphor's discrete weights. */

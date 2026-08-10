@@ -5,6 +5,7 @@ import { getCategory } from "../../lib/categories";
 import { formatINR } from "../../lib/format";
 import { useResolvedColors } from "../../hooks/useResolvedColors";
 import { animationEnabled } from "../../lib/motion";
+import { CategoryTile } from "../ui/CategoryTile";
 
 interface CategoryBreakdownProps {
   slices: CategorySlice[];
@@ -66,24 +67,35 @@ const data = useMemo(() => {
         </div>
       </div>
 
-      <ul className="min-w-0 flex-1 space-y-2">
+      <ul className="min-w-0 flex-1 space-y-3">
         {data.map((s) => {
           const meta = getCategory(s.category);
           const pct = total > 0 ? Math.round((s.total / total) * 100) : 0;
           return (
-            <li key={s.category} className="flex items-center gap-2.5 px-1 py-0.5">
-              <span
-                className="h-2.5 w-2.5 shrink-0 rounded-full"
-                style={{ backgroundColor: `var(${s.colorVar})` }}
-                aria-hidden
-              />
-              <span className="min-w-0 flex-1 truncate text-footnote font-medium text-label-secondary">
-                {meta.label}
-              </span>
-              <span className="text-caption text-label-tertiary">{pct}%</span>
-              <span className="w-20 text-right text-footnote font-semibold tabular-nums">
-                {formatINR(s.total)}
-              </span>
+            <li key={s.category}>
+              <div className="flex items-center gap-2.5 px-1 py-0.5">
+                <CategoryTile category={s.category} size="sm" />
+                <span className="min-w-0 flex-1 truncate text-footnote font-medium text-label-secondary">
+                  {meta.label}
+                </span>
+                <span className="text-caption tabular-nums text-label-tertiary">{pct}%</span>
+                <span className="w-20 text-right text-footnote font-semibold tabular-nums">
+                  {formatINR(s.total)}
+                </span>
+              </div>
+              <div
+                className="mt-1 h-1 overflow-hidden rounded-full bg-bg-secondary"
+                role="progressbar"
+                aria-label={`${meta.label} share`}
+                aria-valuenow={pct}
+                aria-valuemin={0}
+                aria-valuemax={100}
+              >
+                <div
+                  className="h-full rounded-full transition-[width] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                  style={{ width: `${pct}%`, backgroundColor: `var(${s.colorVar})` }}
+                />
+              </div>
             </li>
           );
         })}

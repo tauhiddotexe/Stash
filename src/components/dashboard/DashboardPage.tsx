@@ -2,6 +2,7 @@ import { Suspense, lazy, useMemo, useState } from "react";
 import type { Period, Range } from "../../lib/dates";
 import {
   addDays,
+  diffDays,
   endOfWeek,
   formatDayOfMonth,
   formatFullDate,
@@ -9,11 +10,12 @@ import {
   formatWeekRange,
   monthEnd,
   monthStart,
+  parseDateKey,
   startOfWeek,
   todayKey,
   toDateKey,
 } from "../../lib/dates";
-import { buildTrend, filterByRange, groupByCategory, groupByDay, sum } from "../../lib/calc";
+import { buildTrend, filterByRange, groupByCategory, groupByDay, percentDelta, sum } from "../../lib/calc";
 import type { TrendBucket } from "../../lib/calc";
 import { formatINR } from "../../lib/format";
 import { useExpenses } from "../../state/expenses";
@@ -25,6 +27,7 @@ import { RecentExpenses } from "./RecentExpenses";
 import { AnimatedNumber } from "../ui/AnimatedNumber";
 import type { TabId } from "../ui/TabBar";
 import type { Expense } from "../../types/expense";
+import type { IconName } from "../ui/Icon";
 
 interface DashboardPageProps {
   onNavigate: (tab: TabId) => void;
@@ -81,8 +84,26 @@ export function DashboardPage({ onNavigate, onEditExpense, onAdd }: DashboardPag
     return rangeForPeriod(period, anchor);
   }, [period, anchor, custom]);
 
+  // The immediately-preceding window of the same length (or calendar month).
+  const prevRange: Range = useMemo(() => {
+    if (period === "day") return { start: addDays(range.start, -1), end: addDays(range.end, -1) };
+    if (period === "week") return { start: addDays(range.start, -7), end: addDays(range.end, -7) };
+    if (period === "custom") {
+      const span = diffDays(range.start, range.end) + 1;
+      const prevStart = addDays(range.start, -span);
+      const prevEnd = addDays(range.start, -1);
+      return { start: prevStart, end: prevEnd };
+    }
+    const d = parseDateKey(range.start);
+    const prevDate = new Date(d.getFullYear(), d.getMonth() - 1, 1);
+    return { start: monthStart(toDateKey(prevDate)), end: monthEnd(toDateKey(prevDate)) };
+  }, [period, range]);
+
   const rangeExpenses = useMemo(() => filterByRange(expenses, range.start, range.end), [expenses, range]);
+  const prevExpenses = useMemo(() => filterByRange(expenses, prevRange.start, prevRange.end), [expenses, prevRange]);
   const total = useMemo(() => sum(rangeExpenses), [rangeExpenses]);
+  const prevTotal = useMemo(() => sum(prevExpenses), [prevExpenses]);
+  const delta = useMemo(() => percentDelta(total, prevTotal), [total, prevTotal]);
   const slices = useMemo(() => groupByCategory(rangeExpenses), [rangeExpenses]);
   const trend = useMemo(() => buildTrend(expenses, range.start, range.end), [expenses, range]);
 
@@ -182,36 +203,54 @@ export function DashboardPage({ onNavigate, onEditExpense, onAdd }: DashboardPag
         </div>
       ) : null}
 
-      {/* Hero */}
-      <div className="mt-6 text-center">
-        <div className="text-[20px] font-semibold text-label-secondary">{PERIOD_HEADERS[period]}</div>
-        <div className="mt-1 text-[44px] font-bold leading-none tracking-tight tabular-nums">
-          <AnimatedNumber value={total} format={formatINR} />
-        </div>
-        <div className="mt-1.5 text-footnote text-label-tertiary">
-          {rangeExpenses.length} {rangeExpenses.length === 1 ? "entry" : "entries"} this period
-        </div>
-      </div>
+      {/* Hero — Wallet-style summary card */}
+      <section aria-label="Period summary" className="animate-page-in relative mt-5 overflow-hidden rounded-[24px] bg-accent-gradient p-5 text-white shadow-fab">
+        <div aria-hidden className="pointer-events-none absolute -right-10 -top-12 h-40 w-40 rounded-full bg-white/15 blur-2xl" />
+        <div aria-hidden className="pointer-events-none absolute -bottom-16 -left-8 h-36 w-36 rounded-full bg-black/10 blur-2xl" />
 
-      {/* Quick summary */}
-      <div className="mt-5 grid grid-cols-3 gap-2.5">
-        <SummaryCard label="Today" value={summary.day} />
-        <SummaryCard label="This week" value={summary.week} />
-        <SummaryCard label="This month" value={summary.month} />
+        <div className="relative flex items-start justify-between">
+          <div>
+            <div className="text-caption-2 font-semibold uppercase tracking-[0.08em] text-white/70">
+              {PERIOD_HEADERS[period]}
+            </div>
+            <div className="mt-1.5 text-[40px] font-bold leading-none tracking-tight tabular-nums">
+              <AnimatedNumber value={total} format={formatINR} />
+            </div>
+            <div className="mt-2.5 text-footnote font-medium text-white/75">
+              {rangeExpenses.length} {rangeExpenses.length === 1 ? "entry" : "entries"}
+            </div>
+          </div>
+
+          <DeltaPill delta={delta} prevTotal={prevTotal} onDark className="mt-1" />
+        </div>
+      </section>
+
+      {/* Quick view — role-colored stat tiles */}
+      <div className="mt-4 grid grid-cols-3 gap-2.5">
+        <SummaryCard icon="sunDim" label="Today" value={summary.day} colorVar="--accent" />
+        <SummaryCard icon="calendar" label="This week" value={summary.week} colorVar="--cat-travel" />
+        <SummaryCard icon="wallet" label="This month" value={summary.month} colorVar="--success" />
       </div>
 
       {/* Trend */}
       <Card className="mt-5 p-4">
         <div className="mb-2 flex items-center justify-between">
-          <h2 className="text-title-3 font-semibold">Spending</h2>
-          <span className="text-footnote text-label-secondary">{TREND_SUBTITLES[trend.bucket]}</span>
+          <div className="flex items-center gap-2">
+            <span className="flex h-7 w-7 items-center justify-center rounded-iosgroup bg-accent-soft text-accent">
+              <Icon name="chartLine" size={16} weight="fill" />
+            </span>
+            <h2 className="text-title-3 font-semibold tracking-tight">Spending</h2>
+          </div>
+          <DeltaPill delta={delta} prevTotal={prevTotal} />
         </div>
         <Suspense fallback={<TrendSkeleton />}>
           <TrendChart points={trend.points} bucket={trend.bucket} empty={total === 0} />
         </Suspense>
         {biggestDay ? (
-          <div className="mt-2 flex items-center gap-2 rounded-iosgroup bg-bg-secondary px-3 py-2.5 text-footnote">
-            <Icon name="chartLine" size={15} className="text-accent" />
+          <div className="mt-2 flex items-center gap-2.5 rounded-iosgroup bg-bg-secondary px-3 py-2.5 text-footnote">
+            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[9px] bg-[var(--cat-food)] text-white">
+              <Icon name="trendUp" size={15} weight="fill" />
+            </span>
             <span className="text-label-secondary">Biggest day</span>
             <span className="ml-auto font-semibold tabular-nums">
               {formatDayOfMonth(biggestDay.date)} · {formatINR(biggestDay.total)}
@@ -222,7 +261,15 @@ export function DashboardPage({ onNavigate, onEditExpense, onAdd }: DashboardPag
 
       {/* Categories */}
       <Card className="mt-5 p-4">
-        <h2 className="mb-3 text-title-3 font-semibold">Categories</h2>
+        <div className="mb-3 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="flex h-7 w-7 items-center justify-center rounded-iosgroup bg-[var(--cat-bills)] text-white">
+              <Icon name="chartPie" size={16} weight="fill" />
+            </span>
+            <h2 className="text-title-3 font-semibold tracking-tight">Categories</h2>
+          </div>
+          <span className="text-footnote text-label-tertiary">{TREND_SUBTITLES[trend.bucket]}</span>
+        </div>
         <Suspense fallback={<DonutSkeleton />}>
           <CategoryBreakdown slices={slices} total={total} />
         </Suspense>
@@ -274,14 +321,83 @@ const TREND_SUBTITLES: Record<TrendBucket, string> = {
   month: "Monthly totals",
 };
 
-function SummaryCard({ label, value }: { label: string; value: number }) {
+function SummaryCard({
+  icon,
+  label,
+  value,
+  colorVar,
+}: {
+  icon: IconName;
+  label: string;
+  value: number;
+  colorVar: string;
+}) {
   return (
-    <div className="rounded-ioscard bg-card border border-card-stroke px-2.5 py-3 text-center shadow-card">
-      <div className="text-caption-2 font-semibold uppercase tracking-wide text-label-tertiary">{label}</div>
+    <div className="rounded-ioscard bg-card border border-card-stroke px-2.5 py-3 text-center shadow-card overflow-hidden relative">
+      <span aria-hidden className="absolute inset-x-0 top-0 h-[3px]" style={{ background: `var(${colorVar})` }} />
+      <span
+        className="mx-auto flex h-8 w-8 items-center justify-center rounded-[9px] text-white shadow-card"
+        style={{ backgroundColor: `var(${colorVar})` }}
+      >
+        <Icon name={icon} size={17} weight="fill" />
+      </span>
+      <div className="mt-1.5 text-caption-2 font-semibold uppercase tracking-wide text-label-tertiary">{label}</div>
       <div className="mt-0.5 truncate text-headline font-bold tabular-nums leading-snug tracking-tight">
         {formatINR(value)}
       </div>
     </div>
+  );
+}
+
+/** Compact delta indicator — up (spent more) is danger, down (spent less) is good. */
+function DeltaPill({
+  delta,
+  prevTotal,
+  onDark,
+  className = "",
+}: {
+  delta: number;
+  prevTotal: number;
+  onDark?: boolean;
+  className?: string;
+}) {
+  const isNew = prevTotal === 0;
+  const isEven = delta === 0;
+
+  let icon: IconName = "trendUp";
+  let label: string;
+  let colors: string;
+
+  if (isNew) {
+    icon = "calendar";
+    label = "New period";
+    colors = onDark ? "bg-white/15 text-white/95" : "bg-accent-soft text-accent";
+  } else if (isEven) {
+    icon = "arrowLeft";
+    label = "Same as before";
+    colors = onDark ? "bg-white/15 text-white/80" : "bg-bg-secondary text-label-secondary";
+  } else if (delta > 0) {
+    icon = "arrowUp";
+    label = `${Math.abs(delta).toFixed(delta < 10 ? 1 : 0)}% vs before`;
+    colors = onDark ? "bg-white/15 text-white/80" : "bg-danger-soft text-danger";
+  } else {
+    icon = "arrowDown";
+    label = `${Math.abs(delta).toFixed(-delta < 10 ? 1 : 0)}% vs before`;
+    colors = onDark ? "bg-white/15 text-white/80" : "bg-success-soft text-success";
+  }
+
+  return (
+    <span
+      className={[
+        "inline-flex shrink-0 items-center gap-1 rounded-full px-2.5 py-1 font-semibold tabular-nums",
+        "text-caption-2",
+        colors,
+        className,
+      ].join(" ")}
+    >
+      <Icon name={icon} size={12} weight="bold" />
+      {label}
+    </span>
   );
 }
 

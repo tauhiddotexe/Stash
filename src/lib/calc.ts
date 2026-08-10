@@ -9,6 +9,12 @@ export function filterByRange(expenses: Expense[], start: string, end: string): 
   return expenses.filter((e) => isInRange(e.date, start, end));
 }
 
+/** Percent change from a baseline; 0 when there's nothing to compare against. */
+export function percentDelta(current: number, previous: number): number {
+  if (previous === 0) return 0;
+  return ((current - previous) / previous) * 100;
+}
+
 export interface CategorySlice {
   category: CategoryId;
   colorVar: string;
