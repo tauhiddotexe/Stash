@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+dist-ssr/
+
+# Local tooling / agent artifacts
+.agents/
+.claude/
+dogfood-output/
+skills-lock.json
+*.log
+preview.log
+
+# Docs
+docs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor / IDE
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Env / secrets
+.env
+.env.local
+.env.*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Test coverage
+coverage/
