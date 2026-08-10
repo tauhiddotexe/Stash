@@ -3,7 +3,7 @@
 <br>
 
 <a href="https://tauhiddotexe.github.io/Stash/">
-  <img src="docs/pics/logo.png" alt="Stash logo" width="160"/>
+  <img src="docs/pics/logo.png" alt="Stash logo" width="320"/>
 </a>
 
 <br><br>
@@ -46,37 +46,13 @@
 
 <br>
 
-<table>
-<tr>
-<td width="50%">
 <a href="https://tauhiddotexe.github.io/Stash/">
-  <img src="docs/pics/ui-2(light%26dark_mode%2C%20illustration%2Cdelete-btn).jpeg" alt="Light and dark mode comparison" width="100%"/>
+  <img src="docs/pics/ui-2(light%26dark_mode%2C%20illustration%2Cdelete-btn).jpeg" alt="Light mode, dark mode, illustrated empty states, and delete confirmation" width="100%"/>
 </a>
-</td>
-<td width="50%" valign="top">
 
 <br>
 
-### ☀️🌙 &nbsp;Light & Dark
-
-A seamless transition between themes.
-Your choice is remembered.
-
-<br>
-
-### 🎨 &nbsp;Illustrated Empty States
-
-Friendly visuals with clear calls to action — never a dead end.
-
-<br>
-
-### 🗑️ &nbsp;Thoughtful Deletion
-
-Destructive actions ask twice. Your data stays yours.
-
-</td>
-</tr>
-</table>
+*Light & dark themes, friendly empty states, and thoughtful deletion — every detail considered.*
 
 <br>
 
