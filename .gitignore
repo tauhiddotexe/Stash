@@ -13,8 +13,6 @@ skills-lock.json
 *.log
 preview.log
 
-# Docs
-docs/
 
 # OS
 .DS_Store

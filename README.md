@@ -138,10 +138,6 @@ npm run preview    # Preview the production build locally
 Stash/
 ├── docs/                       # Project documentation & screenshots
 │   ├── pics/                   # UI screenshots for README
-│   ├── prd.md                  # Product Requirements Document
-│   ├── architecture&security.md
-│   ├── PROJECT_CONTEXT.md
-│   └── plan.md
 ├── public/                     # Static assets
 ├── src/
 │   ├── components/
