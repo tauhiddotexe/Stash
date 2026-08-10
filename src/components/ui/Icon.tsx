@@ -81,7 +81,8 @@ export type IconName =
   | "trendDown"
   | "sunDim"
   | "clock"
-  | "stack";
+  | "stack"
+  | "dotsThree";
 
 const ICONS: Record<Exclude<IconName, "other">, PhosphorIcon> = {
   house: House,
@@ -123,6 +124,7 @@ const ICONS: Record<Exclude<IconName, "other">, PhosphorIcon> = {
   sunDim: SunDim,
   clock: Clock,
   stack: Stack,
+  dotsThree: DotsThree,
 };
 
 /** Map the previous stroke-weight API onto Phosphor's discrete weights. */
