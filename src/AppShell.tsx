@@ -76,7 +76,7 @@ export function AppShell() {
               aria-expanded={themeMenuOpen}
               className="flex h-10 w-10 items-center justify-center rounded-full text-label-secondary active:bg-bg-secondary transition-colors"
             >
-              <Icon name="info" size={22} />
+              <Icon name="dotsThree" size={22} />
             </button>
             {themeMenuOpen ? (
               <div
